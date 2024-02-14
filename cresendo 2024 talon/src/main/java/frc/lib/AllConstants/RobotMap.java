@@ -27,11 +27,11 @@ public class RobotMap {
     public final static int FRONT_RIGHT_CANCODER_MOTOR_ID = 4;
 
     public final static int COLLECT_MOTOR_ID = 4;
-    public final static int SHOOT_MOTOR1_ID = 3;
-    public final static int SHOOT_MOTOR2_ID = 5;
+    public final static int RIGHT_SHOOT_MOTOR_ID = 6;
+    public final static int LEFT_SHOOT_MOTOR_ID = 5;
     public final static int ARM_LOWER_LEFT_MOTOR_ID = 1;
     public final static int ARM_LOWER_RIGHT_MOTOR_ID = 2;
-    public final static int ARM_TOP_MOTOR_ID = 6;
+    public final static int ARM_TOP_MOTOR_ID = 3;
 
 
     public final static Rotation2d FRONT_LEFT_ANGLE_OFFSET = Rotation2d.fromDegrees(40.781250);

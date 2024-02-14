@@ -10,8 +10,8 @@ public class ShootSubSystem extends SubsystemBase {
     private static CANSparkMax ShooterMotor1;
     private static CANSparkMax ShooterMotor2;
     public ShootSubSystem() {
-        ShooterMotor1 = new CANSparkMax(RobotMap.SHOOT_MOTOR1_ID, CANSparkMax.MotorType.kBrushless);
-        ShooterMotor2 = new CANSparkMax(RobotMap.SHOOT_MOTOR2_ID, CANSparkMax.MotorType.kBrushless);
+        ShooterMotor1 = new CANSparkMax(RobotMap.RIGHT_SHOOT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
+        ShooterMotor2 = new CANSparkMax(RobotMap.LEFT_SHOOT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
         shootConfig();
     }
 
