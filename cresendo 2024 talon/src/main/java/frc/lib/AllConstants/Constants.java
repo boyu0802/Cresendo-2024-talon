@@ -77,7 +77,6 @@ public class Constants {
         public static final double Lower_Arm_GearRatio = 1.0/(2.0*100.0);
         public static final boolean Lower_Arm_Left_Reversed = false;
         public static final boolean Lower_Arm_Right_Reversed = true;
-        // public static final double Lower_Arm_Offset = 0.0;
 
 
         public static final float Top_Arm_ForwardSoftLimit = 30;
@@ -88,7 +87,6 @@ public class Constants {
         public static final int Top_Arm_CurrentLimit = 35;
         public static final double Top_Arm_GearRatio = 1.0/(2.0*100.0);
         public static final boolean Top_Arm_Reversed = false;
-        // public static final double Top_Arm_Offset = 0.0;
 
         public enum LowerArmPosition {
             AMP,

@@ -18,6 +18,10 @@ public class ShooterCommand extends Command {
 
     @Override
     public void execute(){
-        shootSubSystem.enableShoot(shooterInverted.getAsBoolean(), shooterEnabled.getAsBoolean());
+        if (shooterEnabled.getAsBoolean()){
+            shootSubSystem.enableShoot();
+        }else if (shooterInverted.getAsBoolean()){
+            shootSubSystem.reverseShoot();
+        }
     }
 }

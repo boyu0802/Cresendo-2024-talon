@@ -10,8 +10,8 @@ public class ShootSubSystem extends SubsystemBase {
     private static CANSparkMax ShooterMotor1;
     private static CANSparkMax ShooterMotor2;
     public ShootSubSystem() {
-        ShooterMotor1 = new CANSparkMax(RobotMap.RIGHT_SHOOT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
-        ShooterMotor2 = new CANSparkMax(RobotMap.LEFT_SHOOT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
+        ShooterMotor1 = new CANSparkMax(RobotMap.SHOOT_MOTOR1_ID, CANSparkMax.MotorType.kBrushless);
+        ShooterMotor2 = new CANSparkMax(RobotMap.SHOOT_MOTOR2_ID, CANSparkMax.MotorType.kBrushless);
         shootConfig();
     }
 
@@ -54,16 +54,17 @@ public class ShootSubSystem extends SubsystemBase {
         ShooterMotor2.follow(ShooterMotor1);
     }
 
-    public void enableShoot(boolean inverted, boolean enableShoot) {
+    public void enableShoot() {
         
-        double rpm = inverted ? -Constants.ShooterConstants.Shooter_Speed : Constants.ShooterConstants.Shooter_Speed;
-        if(enableShoot){
-            ShooterMotor1.getPIDController().setReference(rpm, CANSparkMax.ControlType.kVelocity);
-        }
+            ShooterMotor1.getPIDController().setReference(Constants.ShooterConstants.Shooter_Speed, CANSparkMax.ControlType.kVelocity);
+        
     }
 
+    public void reverseShoot() {
+        ShooterMotor1.getPIDController().setReference(-Constants.ShooterConstants.Shooter_Speed, CANSparkMax.ControlType.kVelocity);
+    }
 
-    public void disableableShoot() {
+    public void disableShoot() {
         ShooterMotor1.getPIDController().setReference(0, CANSparkMax.ControlType.kVelocity);
     }
 

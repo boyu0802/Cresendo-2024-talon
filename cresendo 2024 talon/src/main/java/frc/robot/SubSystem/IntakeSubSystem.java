@@ -34,11 +34,12 @@ public class IntakeSubSystem extends SubsystemBase {
     Intake.burnFlash();
   }
 
-  public void enableIntake(boolean intakeReversed, boolean intakeEnabled) {
-    double rpm = intakeReversed ? -Constants.IntakeConstants.Intake_Speed : Constants.IntakeConstants.Intake_Speed;
-    if(intakeEnabled){
-      Intake.getPIDController().setReference(rpm, CANSparkBase.ControlType.kVelocity);
-    }
+  public void enableIntake() {
+      Intake.getPIDController().setReference(Constants.IntakeConstants.Intake_Speed, CANSparkBase.ControlType.kVelocity);
+  }
+
+  public void reverseIntake() {
+    Intake.getPIDController().setReference(-Constants.IntakeConstants.Intake_Speed, CANSparkBase.ControlType.kVelocity);
   }
 
   public void stopIntake() {

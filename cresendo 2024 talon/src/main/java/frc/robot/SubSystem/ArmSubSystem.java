@@ -1,9 +1,9 @@
 package frc.robot.SubSystem;
 
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,8 +15,7 @@ public class ArmSubSystem extends SubsystemBase {
     private CANSparkMax lowerLeftArm;
     private CANSparkMax lowerRightArm;
     private CANSparkMax topArmMotor;
-    private AbsoluteEncoder lowerArmEncoder;
-    private AbsoluteEncoder topArmEncoder;
+
     private double lowerPosition;
     private double topPosition;
 
@@ -25,11 +24,10 @@ public class ArmSubSystem extends SubsystemBase {
         lowerLeftArm = new CANSparkMax(RobotMap.ARM_LOWER_LEFT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
         lowerRightArm = new CANSparkMax(RobotMap.ARM_LOWER_RIGHT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
         topArmMotor = new CANSparkMax(RobotMap.ARM_TOP_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
-        lowerArmEncoder = lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle);
-        topArmEncoder = topArmMotor.getAbsoluteEncoder(Type.kDutyCycle);
         lowerArmConfig(lowerLeftArm, lowerLeftArm.getEncoder(), Constants.ArmConstants.Lower_Arm_Left_Reversed);
         lowerArmConfig(lowerRightArm, lowerRightArm.getEncoder(), Constants.ArmConstants.Lower_Arm_Right_Reversed);
         topArmConfig();
+        syncEncoder();
 
     }
 
@@ -44,16 +42,10 @@ public class ArmSubSystem extends SubsystemBase {
         lowerArmMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, Constants.ArmConstants.Lower_Arm_ReverseSoftLimit);
         lowerArmMotor.setIdleMode(Constants.ArmConstants.Arm_NeutralMode);
         lowerArmMotor.setInverted(Inverted);
-        
         armEncoder.setPosition(0);
         armEncoder.setPositionConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio);
         armEncoder.setVelocityConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio / 60.0);
         lowerArmMotor.burnFlash();
-
-        lowerArmEncoder.setPositionConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio);
-        lowerArmEncoder.setVelocityConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio / 60.0);
-        // lowerArmEncoder.setZeroOffset(Constants.ArmConstants.Lower_Arm_Offset%360);
-
     }
 
     private void topArmConfig(){
@@ -68,42 +60,45 @@ public class ArmSubSystem extends SubsystemBase {
         topArmMotor.setIdleMode(Constants.ArmConstants.Arm_NeutralMode);
         topArmMotor.setInverted(Constants.ArmConstants.Top_Arm_Reversed);
         topArmMotor.getEncoder().setPosition(0);
-        topArmMotor.getEncoder().setPositionConversionFactor(Constants.ArmConstants.Top_Arm_GearRatio);
-        topArmMotor.getEncoder().setVelocityConversionFactor(Constants.ArmConstants.Top_Arm_GearRatio / 60.0);
+        topArmMotor.getEncoder().setPositionConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio);
+        topArmMotor.getEncoder().setVelocityConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio / 60.0);
         topArmMotor.burnFlash();
-
-        topArmEncoder.setPositionConversionFactor(Constants.ArmConstants.Top_Arm_GearRatio);
-        topArmEncoder.setVelocityConversionFactor(Constants.ArmConstants.Top_Arm_GearRatio / 60.0);
-        // topArmEncoder.setZeroOffset(Constants.ArmConstants.Top_Arm_Offset%360);
     }
 
-    public void setArm(double lowerSetPoint, double topSetPoint) {
+    public void setArm(double setPoint) {
         // SmartDashboard.putNumber("Arm Refference", setPoint);
-        lowerLeftArm.getPIDController().setReference(lowerSetPoint, CANSparkMax.ControlType.kPosition);
-        lowerRightArm.getPIDController().setReference(lowerSetPoint, CANSparkMax.ControlType.kPosition);
-        topArmMotor.getPIDController().setReference(topSetPoint, CANSparkMax.ControlType.kPosition);
+        // lowerLeftArm.getPIDController().setReference(lowerSetPoint, CANSparkMax.ControlType.kPosition);
+        // lowerRightArm.getPIDController().setReference(lowerSetPoint, CANSparkMax.ControlType.kPosition);
+        // topArmMotor.getPIDController().setReference(topSetPoint, CANSparkMax.ControlType.kPosition);
+        lowerLeftArm.getPIDController().setReference(setPoint*Constants.ArmConstants.Lower_Arm_ReverseSoftLimit,ControlType.kPosition);
+        lowerRightArm.getPIDController().setReference(setPoint*Constants.ArmConstants.Lower_Arm_ReverseSoftLimit,ControlType.kPosition);
+    }
+
+    public void syncEncoder(){
+        lowerLeftArm.getEncoder().setPosition(lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle).getPosition());
+        lowerRightArm.getEncoder().setPosition(lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle).getPosition());
+        topArmMotor.getEncoder().setPosition(topArmMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition());
     }
 
 
-    public void toIntakePosition() {
-        lowerPosition = Constants.ArmConstants.LOWER_ARM_POSITIONS.get(Constants.ArmConstants.LowerArmPosition.Intake);
-        topPosition = Constants.ArmConstants.TOP_ARM_POSITIONS.get(Constants.ArmConstants.TopArmPosition.Intake);
-        setArm(lowerPosition,topPosition);
-    }
-    public void toAmpPosition() {
-        lowerPosition = Constants.ArmConstants.LOWER_ARM_POSITIONS.get(Constants.ArmConstants.LowerArmPosition.AMP);
-        topPosition = Constants.ArmConstants.TOP_ARM_POSITIONS.get(Constants.ArmConstants.TopArmPosition.AMP);
-        setArm(lowerPosition,topPosition);
-    }
-    public void toSpeakerPosition() {
-        lowerPosition = Constants.ArmConstants.LOWER_ARM_POSITIONS.get(Constants.ArmConstants.LowerArmPosition.SPEAKER);
-        topPosition = Constants.ArmConstants.TOP_ARM_POSITIONS.get(Constants.ArmConstants.TopArmPosition.SPEAKER);
-        setArm(lowerPosition,topPosition);
-    }
+    // public void toIntakePosition() {
+    //     lowerPosition = Constants.ArmConstants.LOWER_ARM_POSITIONS.get(Constants.ArmConstants.LowerArmPosition.Intake);
+    //     topPosition = Constants.ArmConstants.TOP_ARM_POSITIONS.get(Constants.ArmConstants.TopArmPosition.Intake);
+    //     setArm(lowerPosition,topPosition);
+    // }
+    // public void toAmpPosition() {
+    //     lowerPosition = Constants.ArmConstants.LOWER_ARM_POSITIONS.get(Constants.ArmConstants.LowerArmPosition.AMP);
+    //     topPosition = Constants.ArmConstants.TOP_ARM_POSITIONS.get(Constants.ArmConstants.TopArmPosition.AMP);
+    //     setArm(lowerPosition,topPosition);
+    // }
+    // public void toSpeakerPosition() {
+    //     lowerPosition = Constants.ArmConstants.LOWER_ARM_POSITIONS.get(Constants.ArmConstants.LowerArmPosition.SPEAKER);
+    //     topPosition = Constants.ArmConstants.TOP_ARM_POSITIONS.get(Constants.ArmConstants.TopArmPosition.SPEAKER);
+    //     setArm(lowerPosition,topPosition);
+    // }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("top arm absolute encoder position",topArmEncoder.getPosition());
-        SmartDashboard.putNumber("lower arm absolute encoder position",lowerArmEncoder.getPosition());
+      
     }
 }

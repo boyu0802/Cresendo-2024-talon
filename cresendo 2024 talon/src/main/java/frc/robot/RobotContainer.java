@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Commands.ArmCommand;
 import frc.robot.Commands.IntakeCommand;
 import frc.robot.Commands.ShooterCommand;
 import frc.robot.Commands.SwerveCommands;
@@ -42,10 +43,12 @@ public class RobotContainer {
       operatorController::getAButton
     ));
 
-    intakeSubSystem.setDefaultCommand(new IntakeCommand(intakeSubSystem, 
+    intakeSubSystem.setDefaultCommand(new IntakeCommand(intakeSubSystem, shootSubSystem,
       operatorController::getRightBumper, 
       operatorController::getXButton
     ));
+
+    armSubSystem.setDefaultCommand(new ArmCommand(armSubSystem, operatorController::getLeftTriggerAxis, operatorController::getRightTriggerAxis));
       
     configureBindings();
   }
@@ -71,11 +74,9 @@ public class RobotContainer {
 //    Bind shoot button
 
     new JoystickButton(operatorController,XboxController.Button.kB.value)
-            .onTrue(new InstantCommand(shootSubSystem::disableableShoot));
+            .onTrue(new InstantCommand(shootSubSystem::disableShoot));
 
-    new POVButton(operatorController, 0).onTrue(new InstantCommand(armSubSystem::toAmpPosition));
-    new POVButton(operatorController, 90).onTrue(new InstantCommand(armSubSystem::toSpeakerPosition));
-    new POVButton(operatorController, 180).onTrue(new InstantCommand(armSubSystem::toIntakePosition));
+
 
     
 
@@ -83,7 +84,7 @@ public class RobotContainer {
 
 
   // public Command getDisableCommand(){
-  //       return new InstantCommand(musicSubSystem::playMusic);
+        // return new InstantCommand(musicSubSystem::playMusic);
   // }
 
   public Command getAutonomousCommand() {

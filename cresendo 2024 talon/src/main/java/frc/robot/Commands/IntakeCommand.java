@@ -4,24 +4,30 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.SubSystem.IntakeSubSystem;
+import frc.robot.SubSystem.ShootSubSystem;
 
 public class IntakeCommand extends Command {
     private final IntakeSubSystem intakeSubsystem;
+    private final ShootSubSystem shooterSubSystem;
     private final BooleanSupplier intakeReversed;
     private final BooleanSupplier intakeEnabled;
     public IntakeCommand(
-        IntakeSubSystem intakeSubSystem, BooleanSupplier intakeReversed, BooleanSupplier intakeEnabled
+        IntakeSubSystem intakeSubSystem, ShootSubSystem shooterSubSystem, BooleanSupplier intakeReversed, BooleanSupplier intakeEnabled
     ){
         this.intakeSubsystem = intakeSubSystem;
+        this.shooterSubSystem = shooterSubSystem;
         this.intakeReversed = intakeReversed;
         this.intakeEnabled = intakeEnabled;
-        addRequirements(intakeSubSystem);
     }
 
     @Override
     public void execute(){
-        intakeSubsystem.enableIntake(intakeReversed.getAsBoolean(),intakeEnabled.getAsBoolean());
-
+        if (intakeEnabled.getAsBoolean()){
+            intakeSubsystem.enableIntake();
+            shooterSubSystem.reverseShoot();
+        }else if (intakeReversed.getAsBoolean()){
+            intakeSubsystem.reverseIntake();
+        }
     }
 
 }

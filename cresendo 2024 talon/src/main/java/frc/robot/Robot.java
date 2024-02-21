@@ -30,7 +30,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    // m_disableCommand = m_robotContainer.getDisableCommand();
   }
 
   @Override
