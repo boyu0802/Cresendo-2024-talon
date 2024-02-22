@@ -67,8 +67,8 @@ public class Constants {
     }
 
     public final class ArmConstants{
-        public static final float Lower_Arm_ForwardSoftLimit = 30;
-        public static final float Lower_Arm_ReverseSoftLimit = -1;
+        public static final float Lower_Arm_ForwardSoftLimit = 90;
+        public static final float Lower_Arm_ReverseSoftLimit = 0;
         public static final double Lower_Arm_PID[] = {0.01, 0.0, 0.0,0.0};// TO DO : Using Tuner.
         public static final double Lower_Arm_OpenLoopRamp = 0.2;
         public static final double Lower_Arm_ClosedLoopRamp = 0.0;
