@@ -79,8 +79,8 @@ public class Constants {
         public static final boolean Lower_Arm_Right_Reversed = true;
 
 
-        public static final float Top_Arm_ForwardSoftLimit = 30;
-        public static final float Top_Arm_ReverseSoftLimit = -1;
+        public static final float Top_Arm_ForwardSoftLimit = 90;
+        public static final float Top_Arm_ReverseSoftLimit = 0;
         public static final double Top_Arm_PID[] = {0.01, 0.0, 0.0,0.0};// TO DO : Using Tuner.
         public static final double Top_Arm_OpenLoopRamp = 0.2;
         public static final double Top_Arm_ClosedLoopRamp = 0.0;

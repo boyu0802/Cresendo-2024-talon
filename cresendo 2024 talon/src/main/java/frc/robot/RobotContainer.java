@@ -8,11 +8,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Commands.ArmCommand;
-import frc.robot.Commands.IntakeCommand;
-import frc.robot.Commands.ShooterCommand;
 import frc.robot.Commands.SwerveCommands;
 import frc.robot.SubSystem.*;
 
@@ -37,17 +36,6 @@ public class RobotContainer {
       
       ));
 
-
-    shootSubSystem.setDefaultCommand(new ShooterCommand(shootSubSystem, 
-      operatorController::getLeftBumper, 
-      operatorController::getAButton
-    ));
-
-    intakeSubSystem.setDefaultCommand(new IntakeCommand(intakeSubSystem, shootSubSystem,
-      operatorController::getRightBumper, 
-      operatorController::getXButton
-    ));
-
     armSubSystem.setDefaultCommand(new ArmCommand(armSubSystem, operatorController::getLeftTriggerAxis, operatorController::getRightTriggerAxis));
       
     configureBindings();
@@ -66,12 +54,23 @@ public class RobotContainer {
 
 
 //    Bind intake button
+    new JoystickButton(operatorController, XboxController.Button.kX.value)
+            .onTrue(new SequentialCommandGroup(
+                    new InstantCommand(intakeSubSystem::enableIntake),
+                    new InstantCommand(shootSubSystem::reverseShoot)
+            ));
 
     new JoystickButton(operatorController, XboxController.Button.kY.value)
-            .onTrue(new InstantCommand(intakeSubSystem::stopIntake));
+            .onTrue(new SequentialCommandGroup(
+              new InstantCommand(intakeSubSystem::stopIntake),
+              new InstantCommand(shootSubSystem::disableShoot)
+            ));
 
 
 //    Bind shoot button
+
+    new JoystickButton(operatorController, XboxController.Button.kA.value)
+            .onTrue(new InstantCommand(shootSubSystem::enableShoot));
 
     new JoystickButton(operatorController,XboxController.Button.kB.value)
             .onTrue(new InstantCommand(shootSubSystem::disableShoot));
