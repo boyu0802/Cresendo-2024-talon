@@ -24,28 +24,41 @@ public class ArmSubSystem extends SubsystemBase {
         lowerLeftArm = new CANSparkMax(RobotMap.ARM_LOWER_LEFT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
         lowerRightArm = new CANSparkMax(RobotMap.ARM_LOWER_RIGHT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
         topArmMotor = new CANSparkMax(RobotMap.ARM_TOP_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
-        lowerArmConfig(lowerLeftArm, lowerLeftArm.getEncoder(), Constants.ArmConstants.Lower_Arm_Left_Reversed);
-        lowerArmConfig(lowerRightArm, lowerRightArm.getEncoder(), Constants.ArmConstants.Lower_Arm_Right_Reversed);
+        lowerArmConfig();
         topArmConfig();
-        syncEncoder();
+        // syncEncoder();
 
     }
 
-    private void lowerArmConfig(CANSparkMax lowerArmMotor, RelativeEncoder armEncoder, boolean Inverted){
-        lowerArmMotor.restoreFactoryDefaults();
-        lowerArmMotor.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
-        lowerArmMotor.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
-        lowerArmMotor.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
-        lowerArmMotor.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
-        lowerArmMotor.setSmartCurrentLimit(Constants.ArmConstants.Lower_Arm_CurrentLimit);
-        lowerArmMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, Constants.ArmConstants.Lower_Arm_ForwardSoftLimit);
-        lowerArmMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, Constants.ArmConstants.Lower_Arm_ReverseSoftLimit);
-        lowerArmMotor.setIdleMode(Constants.ArmConstants.Arm_NeutralMode);
-        lowerArmMotor.setInverted(Inverted);
-        armEncoder.setPosition(0);
-        armEncoder.setPositionConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio);
-        armEncoder.setVelocityConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio / 60.0);
-        lowerArmMotor.burnFlash();
+    private void lowerArmConfig(){
+        lowerLeftArm.restoreFactoryDefaults();
+        lowerRightArm.restoreFactoryDefaults();
+        lowerLeftArm.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
+        lowerRightArm.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
+        lowerLeftArm.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
+        lowerRightArm.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
+        lowerLeftArm.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
+        lowerRightArm.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
+        lowerLeftArm.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
+        lowerRightArm.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
+        lowerLeftArm.setSmartCurrentLimit(Constants.ArmConstants.Lower_Arm_CurrentLimit);
+        lowerRightArm.setSmartCurrentLimit(Constants.ArmConstants.Lower_Arm_CurrentLimit);
+        lowerLeftArm.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, Constants.ArmConstants.Lower_Arm_ForwardSoftLimit);
+        lowerRightArm.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, Constants.ArmConstants.Lower_Arm_ForwardSoftLimit);
+        lowerLeftArm.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, Constants.ArmConstants.Lower_Arm_ReverseSoftLimit);
+        lowerRightArm.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, Constants.ArmConstants.Lower_Arm_ReverseSoftLimit);
+        lowerLeftArm.setIdleMode(Constants.ArmConstants.Arm_NeutralMode);
+        lowerRightArm.setIdleMode(Constants.ArmConstants.Arm_NeutralMode);
+        lowerLeftArm.setInverted(Constants.ArmConstants.Lower_Arm_Left_Reversed);
+        lowerRightArm.setInverted(Constants.ArmConstants.Lower_Arm_Right_Reversed);
+        lowerLeftArm.getEncoder().setPosition(0);
+        lowerLeftArm.getEncoder().setPositionConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio);
+        lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle).setPositionConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio);
+        lowerLeftArm.getEncoder().setVelocityConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio / 60.0);
+        lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle).setVelocityConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio / 60.0);
+        lowerLeftArm.follow(lowerRightArm, true);
+        lowerLeftArm.burnFlash();
+        lowerRightArm.burnFlash();
     }
 
     private void topArmConfig(){
@@ -70,15 +83,14 @@ public class ArmSubSystem extends SubsystemBase {
         // lowerLeftArm.getPIDController().setReference(lowerSetPoint, CANSparkMax.ControlType.kPosition);
         // lowerRightArm.getPIDController().setReference(lowerSetPoint, CANSparkMax.ControlType.kPosition);
         // topArmMotor.getPIDController().setReference(topSetPoint, CANSparkMax.ControlType.kPosition);
-        lowerLeftArm.getPIDController().setReference(setPoint*Constants.ArmConstants.Lower_Arm_ReverseSoftLimit,ControlType.kPosition);
-        lowerRightArm.getPIDController().setReference(setPoint*Constants.ArmConstants.Lower_Arm_ReverseSoftLimit,ControlType.kPosition);
+        lowerRightArm.getPIDController().setReference(setPoint*40,ControlType.kPosition);
     }
 
-    public void syncEncoder(){
-        lowerLeftArm.getEncoder().setPosition(lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle).getPosition());
-        lowerRightArm.getEncoder().setPosition(lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle).getPosition());
-        topArmMotor.getEncoder().setPosition(topArmMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition());
-    }
+    // public void syncEncoder(){
+    //     lowerLeftArm.getEncoder().setPosition(lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle).getPosition());
+    //     lowerRightArm.getEncoder().setPosition(lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle).getPosition());
+    //     topArmMotor.getEncoder().setPosition(topArmMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition());
+    // }
 
 
     // public void toIntakePosition() {
