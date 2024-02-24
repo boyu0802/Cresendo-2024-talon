@@ -24,8 +24,8 @@ public class Constants {
 
     public static final class ShooterConstants{
         public static final double Shooter_GearRaio = 1;
-        public static final boolean Shooter_Inverted = true;
-        public static final boolean Shooter2_Inverted = false;
+        public static final boolean Shooter_Inverted = false;
+        public static final boolean Shooter2_Inverted = true;
         public static final double Shooter_Speed = 1200;
         public static final double Shooter_OpenLoopRamp = 0.6;
         public static final double Shooter_ClosedLoopRamp = 0.0;
@@ -67,14 +67,14 @@ public class Constants {
     }
 
     public final class ArmConstants{
-        public static final float Lower_Arm_ForwardSoftLimit = 90;
+        public static final float Lower_Arm_ForwardSoftLimit = 40;
         public static final float Lower_Arm_ReverseSoftLimit = 0;
         public static final double Lower_Arm_PID[] = {0.01, 0.0, 0.0,0.0};// TO DO : Using Tuner.
         public static final double Lower_Arm_OpenLoopRamp = 0.2;
         public static final double Lower_Arm_ClosedLoopRamp = 0.0;
         public static final int Lower_Arm_CurrentLimit = 35;
         public static final CANSparkBase.IdleMode Arm_NeutralMode = CANSparkBase.IdleMode.kBrake;
-        public static final double Lower_Arm_GearRatio = 1.0/(2.0*100.0);
+        public static final double Lower_Arm_GearRatio = 1.0/250.0;
         public static final boolean Lower_Arm_Left_Reversed = false;
         public static final boolean Lower_Arm_Right_Reversed = true;
 
@@ -85,7 +85,7 @@ public class Constants {
         public static final double Top_Arm_OpenLoopRamp = 0.2;
         public static final double Top_Arm_ClosedLoopRamp = 0.0;
         public static final int Top_Arm_CurrentLimit = 35;
-        public static final double Top_Arm_GearRatio = 1.0/(2.0*100.0);
+        public static final double Top_Arm_GearRatio = 1.0/80.0;
         public static final boolean Top_Arm_Reversed = false;
 
         public enum LowerArmPosition {
