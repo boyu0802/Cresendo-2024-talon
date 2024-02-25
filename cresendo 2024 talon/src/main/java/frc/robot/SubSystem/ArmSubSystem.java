@@ -32,15 +32,15 @@ public class ArmSubSystem extends SubsystemBase {
 
     private void lowerArmConfig(){
         lowerLeftArm.restoreFactoryDefaults();
-        lowerRightArm.restoreFactoryDefaults();
-        lowerLeftArm.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
-        lowerRightArm.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
-        lowerLeftArm.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
-        lowerRightArm.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
-        lowerLeftArm.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
-        lowerRightArm.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
-        lowerLeftArm.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
-        lowerRightArm.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
+        lowerRightArm.restoreFactoryDefaults();         
+        // lowerLeftArm.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
+        // lowerRightArm.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
+        // lowerLeftArm.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
+        // lowerRightArm.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
+        // lowerLeftArm.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
+        // lowerRightArm.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
+        // lowerLeftArm.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
+        // lowerRightArm.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
         lowerLeftArm.setSmartCurrentLimit(Constants.ArmConstants.Lower_Arm_CurrentLimit);
         lowerRightArm.setSmartCurrentLimit(Constants.ArmConstants.Lower_Arm_CurrentLimit);
         lowerLeftArm.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, Constants.ArmConstants.Lower_Arm_ForwardSoftLimit);
@@ -51,10 +51,7 @@ public class ArmSubSystem extends SubsystemBase {
         lowerRightArm.setIdleMode(Constants.ArmConstants.Arm_NeutralMode);
         lowerLeftArm.setInverted(Constants.ArmConstants.Lower_Arm_Left_Reversed);
         lowerRightArm.setInverted(Constants.ArmConstants.Lower_Arm_Right_Reversed);
-        lowerLeftArm.getEncoder().setPosition(0);
-        lowerLeftArm.getEncoder().setPositionConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio);
         lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle).setPositionConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio);
-        lowerLeftArm.getEncoder().setVelocityConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio / 60.0);
         lowerRightArm.getAbsoluteEncoder(Type.kDutyCycle).setVelocityConversionFactor(Constants.ArmConstants.Lower_Arm_GearRatio / 60.0);
         lowerLeftArm.follow(lowerRightArm, true);
         lowerLeftArm.burnFlash();
@@ -78,12 +75,9 @@ public class ArmSubSystem extends SubsystemBase {
         topArmMotor.burnFlash();
     }
 
-    public void setArm(double setPoint) {
-        // SmartDashboard.putNumber("Arm Refference", setPoint);
-        // lowerLeftArm.getPIDController().setReference(lowerSetPoint, CANSparkMax.ControlType.kPosition);
-        // lowerRightArm.getPIDController().setReference(lowerSetPoint, CANSparkMax.ControlType.kPosition);
-        // topArmMotor.getPIDController().setReference(topSetPoint, CANSparkMax.ControlType.kPosition);
-        lowerRightArm.getPIDController().setReference(setPoint*40,ControlType.kPosition);
+    public void setLowerArm(double setPoint) {
+        // lowerRightArm.getPIDController().setReference(setPoint, CANSparkMax.ControlType.kPosition);
+        lowerRightArm.set(setPoint*0.7);
     }
 
     // public void syncEncoder(){
@@ -95,18 +89,15 @@ public class ArmSubSystem extends SubsystemBase {
 
     // public void toIntakePosition() {
     //     lowerPosition = Constants.ArmConstants.LOWER_ARM_POSITIONS.get(Constants.ArmConstants.LowerArmPosition.Intake);
-    //     topPosition = Constants.ArmConstants.TOP_ARM_POSITIONS.get(Constants.ArmConstants.TopArmPosition.Intake);
-    //     setArm(lowerPosition,topPosition);
+    //     setArm(lowerPosition);
     // }
     // public void toAmpPosition() {
     //     lowerPosition = Constants.ArmConstants.LOWER_ARM_POSITIONS.get(Constants.ArmConstants.LowerArmPosition.AMP);
-    //     topPosition = Constants.ArmConstants.TOP_ARM_POSITIONS.get(Constants.ArmConstants.TopArmPosition.AMP);
-    //     setArm(lowerPosition,topPosition);
+    //     setArm(lowerPosition);
     // }
     // public void toSpeakerPosition() {
     //     lowerPosition = Constants.ArmConstants.LOWER_ARM_POSITIONS.get(Constants.ArmConstants.LowerArmPosition.SPEAKER);
-    //     topPosition = Constants.ArmConstants.TOP_ARM_POSITIONS.get(Constants.ArmConstants.TopArmPosition.SPEAKER);
-    //     setArm(lowerPosition,topPosition);
+    //     setArm(lowerPosition);
     // }
 
     @Override

@@ -20,10 +20,11 @@ public class Constants {
         public static final double Chassis_MaxSpeed = 8;
         public static final double Chassis_MaxAngularVelocity = 4.5;
         
+        
     }
 
     public static final class ShooterConstants{
-        public static final double Shooter_GearRaio = 1;
+        public static final double Shooter_GearRaio = 2;
         public static final boolean Shooter_Inverted = false;
         public static final boolean Shooter2_Inverted = true;
         public static final double Shooter_Speed = 1200;
@@ -31,25 +32,9 @@ public class Constants {
         public static final double Shooter_ClosedLoopRamp = 0.0;
         public static final int Shooter_CurrentLimit = 35;
         public static final CANSparkBase.IdleMode Shooter_NeutralMode = CANSparkBase.IdleMode.kCoast;
-        public final static double Shooter_PID[] = {0.05, 0.0, 0.0,0.0};
+        public final static double Shooter_PID[] = {0.00003, 0.00005, 0.0,0.0007};
     } 
-
-    public static final class DriveConstants{
-        public static final double Drive_OpenLoopRamp = 0.25;
-        public static final double Drive_CloseLoopRamp = 0.0;
-        public static final NeutralModeValue Drive_NeutralMode = NeutralModeValue.Brake;
-        public static final double Drive_ContinuousCurrentLimit= 35;
-        public static final double Drive_PeakCurrentLimit = 35;
-        public static final double Drive_PeakCurrentDuration = 0.1;
-        public static final boolean Drive_CurrentLimitEnable = true;
-
-        public static final double Drive_PID[] = {0.05, 0.0, 0.0}; // TO DO : Using Tuner.
-        public static final double Drive_KS = (0.32/ChassisConstants.MaxVoltage);
-        public static final double Drive_KV = (1.51/ChassisConstants.MaxVoltage);
-        public static final double Drive_KA = (0.27/ChassisConstants.MaxVoltage);
-
-
-    }
+    
 
     public static final class AngleConstants{
         public static final int Angle_CurrentLimit = 35;
@@ -60,15 +45,11 @@ public class Constants {
 
     }
 
-    public final class NavxConstants{
-        public static boolean Navx_Inverted = true;
-        public static byte Navx_UpdateRate = 127;
-        public static final double Navx_HeadingOffset = -2.50;
-    }
+    
 
     public final class ArmConstants{
-        public static final float Lower_Arm_ForwardSoftLimit = 40;
-        public static final float Lower_Arm_ReverseSoftLimit = 0;
+        public static final float Lower_Arm_ForwardSoftLimit = 0;
+        public static final float Lower_Arm_ReverseSoftLimit = -45;
         public static final double Lower_Arm_PID[] = {0.01, 0.0, 0.0,0.0};// TO DO : Using Tuner.
         public static final double Lower_Arm_OpenLoopRamp = 0.2;
         public static final double Lower_Arm_ClosedLoopRamp = 0.0;
@@ -120,12 +101,12 @@ public class Constants {
     }
 
     public final class IntakeConstants{
-        public static final double Intake_PID[] = {0.05, 0.0, 0.0,0.0};// TO DO : Using Tuner.
+        public static final double Intake_PID[] = {0.0012, 0.0001, 0.0,0.0002};// TO DO : Using Tuner.
         public static final double Intake_OpenLoopRamp = 0.53;
         public static final double Intake_ClosedLoopRamp = 0.0;
         public static final int Intake_CurrentLimit = 35;
-        public static final CANSparkBase.IdleMode Intake_NeutrualMode = CANSparkBase.IdleMode.kBrake;
-        public static final double Intake_GearRatio = 1.0;
+        public static final CANSparkBase.IdleMode Intake_NeutrualMode = CANSparkBase.IdleMode.kCoast;
+        public static final double Intake_GearRatio = 1/25;
 
         public static final boolean Intake_Inverted = true;
         public static final double Intake_Speed = 1000;
@@ -138,8 +119,52 @@ public class Constants {
 
     public static final double JoystickDeadBand = 0.07;
 
-
+    public final class SwerveConstants{
     
+        public static final double SWERVE_CHASSIS_TRACKWIDTH_METERS = 0.62865;
+        public static final double SWERVE_CHASSIS_WHEELBASE_METERS = 0.62865;
+        public static final double SWERVE_WHEEL_CIRCUMFERENCE = Convertions.inchesToMeters(4.0) * Math.PI;
+        public static final double SWERVE_MAX_SPEED = 8; //Wait for test.
+        public static final double SWERVE_MAX_ANGULAR_VELOCITY = 4.5;//Wait for test.
 
+        public static final double SWERVE_POV_MOVE_SPEED = 0.2;
+
+        public static final int SWEVRVE_PERIOD_MS = 10;
+        public static final double SWERVE_VOLTAGE_COMPENSATION = 12.0;
+        public static final int SWERVE_ANGLE_CURRENT_LIMIT = 35;
+        public static final double SWERVE_ANGLE_CONTINUOUS_CURRENT_LIMIT = 35;
+        public static final double SWERVE_ANGLE_PEAK_CURRENT_LIMIT = 35;
+        public static final double SWERVE_ANGLE_PEAK_CURRENT_DURATION = 0.1;
+        public static final boolean SWERVE_ANGLE_CURRENT_ENABLED = true;
+
+        public static final double SWERVE_DRIVE_CONTINUOUS_CURRENT_LIMIT = 35;
+        public static final double SWERVE_DRIVE_PEAK_CURRENT_LIMIT = 35;
+        public static final double SWERVE_DRIVE_PEAK_CURRENT_DURATION = 0.1;
+        public static final boolean SWERVE_DRIVE_CURRENT_ENABLED = true;
+
+        public static final double SWERVE_DRIVE_PID[] = {0.05, 0.0, 0.0}; // TO DO : Using Tuner.
+        public static final double SWERVE_DRIVE_KS = (0.32 / 12);
+        public static final double SWERVE_DRIVE_KV = (1.51 / 12);
+        public static final double SWERVE_DRIVE_KA = (0.27 / 12);
+
+        public static final double SWERVE_AUTO_XY_PID[] = {5.0, 0.0, 0.0}; // TO DO : Using Tuner.
+        public static final double SWERVE_AUTO_Z_PID[] = {5.0, 0.0, 0.0};
+
+        public static final double SWERVE_DRIVE_MOTOR_OPENLOOPRAMP = 0.25;
+        public static final double SWERVE_DRIVE_MOTOR_CLOSELOOPRAMP = 0.0;
+
+
+        public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
+        public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Coast;
+
+        public static final double DRIVEJOYSTICK_DEADBAND = 0.07;
+
+        public static final SwerveDriveKinematics SwerveDriveKinematics = new SwerveDriveKinematics(new Translation2d(SWERVE_CHASSIS_TRACKWIDTH_METERS / 2, SWERVE_CHASSIS_WHEELBASE_METERS / 2), new Translation2d(-SWERVE_CHASSIS_TRACKWIDTH_METERS / 2, SWERVE_CHASSIS_WHEELBASE_METERS / 2), new Translation2d(-SWERVE_CHASSIS_TRACKWIDTH_METERS / 2, -SWERVE_CHASSIS_WHEELBASE_METERS / 2), new Translation2d(SWERVE_CHASSIS_TRACKWIDTH_METERS / 2, -SWERVE_CHASSIS_WHEELBASE_METERS / 2));
+
+            
+        public static boolean NAVX_INVERTED = true;
+        public static byte NAVX_UPDATE_RATE = 127;
+        public static final double NAVX_FUSEDHEADING_OFFSET = -2.50;
+    }
 
 }

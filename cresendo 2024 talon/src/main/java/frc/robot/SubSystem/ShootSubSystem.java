@@ -62,14 +62,13 @@ public class ShootSubSystem extends SubsystemBase {
 
     public void reverseShoot() {
         ShooterMotor1.getPIDController().setReference(-Constants.ShooterConstants.Shooter_Speed, CANSparkMax.ControlType.kVelocity);
-        ShooterMotor1.getPIDController().setReference(-Constants.ShooterConstants.Shooter_Speed, CANSparkMax.ControlType.kVelocity);
+        ShooterMotor2.getPIDController().setReference(-Constants.ShooterConstants.Shooter_Speed, CANSparkMax.ControlType.kVelocity);
 
     }
 
     public void disableShoot() {
-        ShooterMotor1.getPIDController().setReference(0, CANSparkMax.ControlType.kVelocity);
-        ShooterMotor1.getPIDController().setReference(0, CANSparkMax.ControlType.kVelocity);
-
+        ShooterMotor1.stopMotor();;
+        ShooterMotor2.stopMotor();
     }
 
 }

@@ -19,6 +19,6 @@ public class ArmCommand extends Command {
 
     @Override
     public void execute(){
-        armSubSystem.setArm(lowerArmUp.getAsDouble() - lowerArmDown.getAsDouble());
+        armSubSystem.setLowerArm(lowerArmUp.getAsDouble() - lowerArmDown.getAsDouble());
     }
 }

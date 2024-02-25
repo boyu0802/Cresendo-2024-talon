@@ -31,7 +31,7 @@ public class RobotMap {
     public final static int SHOOT_MOTOR2_ID = 7;
     public final static int ARM_LOWER_LEFT_MOTOR_ID = 1;
     public final static int ARM_LOWER_RIGHT_MOTOR_ID = 2;
-    public final static int ARM_TOP_MOTOR_ID = 6;
+    public final static int ARM_TOP_MOTOR_ID = 5;
 
 
     public final static Rotation2d FRONT_LEFT_ANGLE_OFFSET = Rotation2d.fromDegrees(40.781250);
@@ -39,10 +39,4 @@ public class RobotMap {
     public final static Rotation2d BACK_RIGHT_ANGLE_OFFSET = Rotation2d.fromDegrees(100.634766);
     public final static Rotation2d FRONT_RIGHT_ANGLE_OFFSET = Rotation2d.fromDegrees(254.794922);
 
-    public static final SwerveDriveKinematics SwerveDriveKinematics = new SwerveDriveKinematics(
-        new Translation2d(ChassisConstants.Chassis_Width / 2, ChassisConstants.Chassis_Length / 2),
-        new Translation2d(-ChassisConstants.Chassis_Width / 2, ChassisConstants.Chassis_Length / 2),
-        new Translation2d(-ChassisConstants.Chassis_Width / 2, -ChassisConstants.Chassis_Length / 2),
-        new Translation2d(ChassisConstants.Chassis_Width / 2, -ChassisConstants.Chassis_Length / 2)
-    );
 }

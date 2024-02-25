@@ -16,20 +16,21 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.AllConstants.Constants;
+import frc.lib.AllConstants.Constants.SwerveConstants;
 import frc.lib.AllConstants.RobotMap;
 import frc.lib.AllConstants.SwerveTypeConstants;
+import frc.robot.Robot;
 
 
 public class SwerveSubSystem extends SubsystemBase {
 
     public swerveModule[] swerveModules;
-    public SwerveDriveKinematics swerveDriveKinematics = RobotMap.SwerveDriveKinematics;
+    public SwerveDriveKinematics swerveDriveKinematics = SwerveConstants.SwerveDriveKinematics;
     public SwerveDriveOdometry swerveDriveOdometry ;
     public AHRS navX;
 
     public SwerveSubSystem(){
-        navX = new AHRS(SPI.Port.kMXP, Constants.NavxConstants.Navx_UpdateRate);
+        navX = new AHRS(SPI.Port.kMXP, SwerveConstants.NAVX_UPDATE_RATE);
         navX.reset();
 
         swerveModules = new swerveModule[]{
@@ -62,7 +63,7 @@ public class SwerveSubSystem extends SubsystemBase {
 
         resetModulesToAbsolute();
 
-        swerveDriveKinematics = RobotMap.SwerveDriveKinematics;
+        swerveDriveKinematics = SwerveConstants.SwerveDriveKinematics;
         swerveDriveOdometry = new SwerveDriveOdometry(swerveDriveKinematics, getYaw(), getModulePositions());
     }
 
@@ -78,14 +79,14 @@ public class SwerveSubSystem extends SubsystemBase {
                 translation.getX(),
                 translation.getY(),
                 rotation));
-            SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,Constants.ChassisConstants.Chassis_MaxSpeed);
+            SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,SwerveConstants.SWERVE_MAX_SPEED);
             for (swerveModule module : swerveModules){
                 module.setDesireState(swerveModuleStates[module.moduleNumber], isOpenLoop);
             }
     }
     public void setModuleStates(SwerveModuleState[] swerveModuleStates){
         
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.ChassisConstants.Chassis_MaxSpeed);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.SWERVE_MAX_SPEED);
         for (swerveModule module : swerveModules){
            
             module.setDesireState(swerveModuleStates[module.moduleNumber], false);
@@ -111,7 +112,7 @@ public class SwerveSubSystem extends SubsystemBase {
     }
 
     public Rotation2d getYaw(){
-       return (Constants.NavxConstants.Navx_Inverted) ? Rotation2d.fromDegrees(360 - navX.getYaw()) : Rotation2d.fromDegrees(navX.getYaw());
+       return (SwerveConstants.NAVX_INVERTED) ? Rotation2d.fromDegrees(360 - navX.getYaw()) : Rotation2d.fromDegrees(navX.getYaw());
     }
     public void resetModulesToAbsolute(){
         for(swerveModule module : swerveModules){
@@ -137,8 +138,8 @@ public class SwerveSubSystem extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + module.moduleNumber + " CanCoder",module.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + module.moduleNumber + " Integrated", module.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + module.moduleNumber + " Velocity", module.getState().speedMetersPerSecond);
+            
         }
-
     SmartDashboard.putNumber("Roll", navX.getRoll());
     }
 
