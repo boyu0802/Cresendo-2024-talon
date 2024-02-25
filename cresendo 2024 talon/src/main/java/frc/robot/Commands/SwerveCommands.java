@@ -42,8 +42,8 @@ public class SwerveCommands extends Command {
             
         
         swerveSubSystem.drive(
-            new Translation2d(translationval,strafeval).times(Constants.ChassisConstants.Chassis_MaxSpeed),
-            rotationval * Constants.ChassisConstants.Chassis_MaxAngularVelocity,
+            new Translation2d(translationval,strafeval).times(Constants.SwerveConstants.SWERVE_MAX_SPEED),
+            rotationval * Constants.SwerveConstants.SWERVE_MAX_ANGULAR_VELOCITY,
             !robotCentricSupplier.getAsBoolean(),
             true
         );

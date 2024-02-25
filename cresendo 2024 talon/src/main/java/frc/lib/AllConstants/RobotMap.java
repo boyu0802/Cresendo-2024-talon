@@ -3,8 +3,7 @@ package frc.lib.AllConstants;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import frc.lib.AllConstants.Constants.ChassisConstants;
-import frc.lib.AllConstants.Constants.ChassisConstants.*;
+
 
 public class RobotMap {
     public static final String SWERVE_CANBUS_TYPE = "rio";

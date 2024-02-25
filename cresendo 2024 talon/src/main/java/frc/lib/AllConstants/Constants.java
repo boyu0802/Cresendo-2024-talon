@@ -12,16 +12,6 @@ import frc.lib.convert.Convertions;
 
 public class Constants {
 
-    public static final class ChassisConstants{
-        public final static double MaxVoltage = 12.0;
-        public static final double Chassis_Width = 0.62865;
-        public static final double Chassis_Length = 0.62865;
-        public static final double Chassis_WheelCircumference = Convertions.inchesToMeters(4.0) * Math.PI;
-        public static final double Chassis_MaxSpeed = 8;
-        public static final double Chassis_MaxAngularVelocity = 4.5;
-        
-        
-    }
 
     public static final class ShooterConstants{
         public static final double Shooter_GearRaio = 2;
@@ -36,14 +26,6 @@ public class Constants {
     } 
     
 
-    public static final class AngleConstants{
-        public static final int Angle_CurrentLimit = 35;
-        public static final double Angle_PeakCurrentLimit = 35;
-        public static final double Angle_PeakCurrentDuration = 0.1;
-        public static final boolean Angle_CurrentLimitEnabled = true;
-        public static final NeutralModeValue Angle_NeutralMode = NeutralModeValue.Coast;
-
-    }
 
     
 
