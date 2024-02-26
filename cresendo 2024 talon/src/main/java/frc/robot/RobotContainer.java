@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Commands.ArmCommand;
@@ -36,7 +37,18 @@ public class RobotContainer {
       
       ));
 
-    armSubSystem.setDefaultCommand(new ArmCommand(armSubSystem, operatorController::getLeftTriggerAxis, operatorController::getRightTriggerAxis));
+    armSubSystem.setDefaultCommand(
+        // new ArmCommand(
+        //   armSubSystem, 
+        //   () -> operatorController.getRawAxis(XboxController.Axis.kLeftTrigger.value),
+        //   ()->operatorController.getRawAxis(XboxController.Axis.kRightTrigger.value),
+        //   ()-> operatorController.getRawButton(XboxController.Button.kLeftBumper.value),
+        //   ()-> operatorController.getRawButton(XboxController.Button.kRightBumper.value))
+      
+        new ArmCommand(
+          armSubSystem, 
+          () -> operatorController.getPOV())
+        );
       
     configureBindings();
   }
@@ -52,10 +64,13 @@ public class RobotContainer {
     // new JoystickButton(driveController, XboxController.Button.kBack.value)
     //                 .onTrue(new InstantCommand(musicSubSystem::pauseMusic));
 
+   
+
 
 //    Bind intake button
     new JoystickButton(operatorController, XboxController.Button.kX.value)
             .onTrue(new SequentialCommandGroup(
+              
                     new InstantCommand(intakeSubSystem::enableIntake),
                     new InstantCommand(shootSubSystem::reverseShoot)
             ));
@@ -70,11 +85,35 @@ public class RobotContainer {
 //    Bind shoot button
 
     new JoystickButton(operatorController, XboxController.Button.kA.value)
-            .onTrue(new InstantCommand(shootSubSystem::enableShoot));
+            .onTrue(new SequentialCommandGroup(
+              new InstantCommand(shootSubSystem::enableShoot),
+              new WaitCommand(2),
+              new InstantCommand(intakeSubSystem::enableIntake),
+              new WaitCommand(1),
+              new InstantCommand(shootSubSystem::disableShoot),
+              new InstantCommand(intakeSubSystem::stopIntake)
+            ));
 
-    new JoystickButton(operatorController,XboxController.Button.kB.value)
-            .onTrue(new InstantCommand(shootSubSystem::disableShoot));
+//   Bind Arm Button
 
+    // new POVButton(operatorController, 0)
+    //     .onTrue(new SequentialCommandGroup(
+    //         new InstantCommand(armSubSystem::topToSpeakerPosition),
+    //         new InstantCommand(armSubSystem::lowerToSpeakerPosition)
+    // ));
+
+    //     new POVButton(operatorController, 90)
+    //     .onTrue(new SequentialCommandGroup(
+    //         new InstantCommand(armSubSystem::topToAmpPosition),
+    //         new InstantCommand(armSubSystem::lowerToAmpPosition)
+    // ));
+
+
+    //     new POVButton(operatorController, 180)
+    //     .onTrue(new SequentialCommandGroup(
+    //         new InstantCommand(armSubSystem::topToIntakePosition),
+    //         new InstantCommand(armSubSystem::lowerToIntakePosition)
+    // ));
 
 
     

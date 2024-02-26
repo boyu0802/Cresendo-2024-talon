@@ -30,26 +30,26 @@ public class Constants {
     
 
     public final class ArmConstants{
-        public static final float Lower_Arm_ForwardSoftLimit = 0;
-        public static final float Lower_Arm_ReverseSoftLimit = -45;
-        public static final double Lower_Arm_PID[] = {0.01, 0.0, 0.0,0.0};// TO DO : Using Tuner.
+        public static final float Lower_Arm_ForwardSoftLimit = 90;
+        public static final float Lower_Arm_ReverseSoftLimit = 0;
+        public static final double Lower_Arm_PID[] = {0.001, 0.0, 0.0,0.0};// TO DO : Using Tuner.
         public static final double Lower_Arm_OpenLoopRamp = 0.2;
         public static final double Lower_Arm_ClosedLoopRamp = 0.0;
         public static final int Lower_Arm_CurrentLimit = 35;
         public static final CANSparkBase.IdleMode Arm_NeutralMode = CANSparkBase.IdleMode.kBrake;
         public static final double Lower_Arm_GearRatio = 1.0/250.0;
-        public static final boolean Lower_Arm_Left_Reversed = false;
-        public static final boolean Lower_Arm_Right_Reversed = true;
+        public static final boolean Lower_Arm_Left_Reversed = true;
+        public static final boolean Lower_Arm_Right_Reversed = false;
 
 
-        public static final float Top_Arm_ForwardSoftLimit = 90;
+        public static final float Top_Arm_ForwardSoftLimit = 130;
         public static final float Top_Arm_ReverseSoftLimit = 0;
-        public static final double Top_Arm_PID[] = {0.01, 0.0, 0.0,0.0};// TO DO : Using Tuner.
+        public static final double Top_Arm_PID[] = {0.001, 0.0, 0.0,0.0};// TO DO : Using Tuner.
         public static final double Top_Arm_OpenLoopRamp = 0.2;
         public static final double Top_Arm_ClosedLoopRamp = 0.0;
         public static final int Top_Arm_CurrentLimit = 35;
         public static final double Top_Arm_GearRatio = 1.0/80.0;
-        public static final boolean Top_Arm_Reversed = false;
+        public static final boolean Top_Arm_Reversed = true;
 
         public enum LowerArmPosition {
             AMP,
@@ -66,17 +66,17 @@ public class Constants {
 
         public static HashMap<LowerArmPosition,Integer> LOWER_ARM_POSITIONS = new HashMap<LowerArmPosition,Integer>(){
             {
-                put(LowerArmPosition.AMP, 58);
-                put(LowerArmPosition.SPEAKER, 18);
-                put(LowerArmPosition.Intake, 4);
+                put(LowerArmPosition.AMP, 30);
+                put(LowerArmPosition.SPEAKER, 42);
+                put(LowerArmPosition.Intake, 90);
             }
         };
 
         public static HashMap<TopArmPosition,Integer> TOP_ARM_POSITIONS = new HashMap<TopArmPosition,Integer>(){
             {
-                put(TopArmPosition.AMP, 58);
-                put(TopArmPosition.SPEAKER, 18);
-                put(TopArmPosition.Intake, 4);
+                put(TopArmPosition.AMP, 114);
+                put(TopArmPosition.SPEAKER, 28);
+                put(TopArmPosition.Intake, 128);
             }
         };
 
