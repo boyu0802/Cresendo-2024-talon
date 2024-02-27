@@ -3,12 +3,14 @@ package frc.robot.SubSystem;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.AllConstants.Constants;
@@ -24,9 +26,9 @@ public class ArmSubSystem extends SubsystemBase {
 
 
     public ArmSubSystem() {
-        lowerLeftArm = new CANSparkMax(RobotMap.ARM_LOWER_LEFT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
-        lowerRightArm = new CANSparkMax(RobotMap.ARM_LOWER_RIGHT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
-        topArmMotor = new CANSparkMax(RobotMap.ARM_TOP_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
+        lowerLeftArm = new CANSparkMax(1, CANSparkMax.MotorType.kBrushless);
+        lowerRightArm = new CANSparkMax(2, CANSparkMax.MotorType.kBrushless);
+        topArmMotor = new CANSparkMax(5, CANSparkMax.MotorType.kBrushless);
         lowerArmConfig();
         topArmConfig();
         syncEncoder();
@@ -36,14 +38,14 @@ public class ArmSubSystem extends SubsystemBase {
     private void lowerArmConfig(){
         lowerLeftArm.restoreFactoryDefaults();
         lowerRightArm.restoreFactoryDefaults();         
-        // lowerLeftArm.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
-        // lowerRightArm.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
-        // lowerLeftArm.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
-        // lowerRightArm.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
-        // lowerLeftArm.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
-        // lowerRightArm.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
-        // lowerLeftArm.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
-        // lowerRightArm.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
+        lowerLeftArm.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
+        lowerRightArm.getPIDController().setP(Constants.ArmConstants.Lower_Arm_PID[0], 0);
+        lowerLeftArm.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
+        lowerRightArm.getPIDController().setI(Constants.ArmConstants.Lower_Arm_PID[1], 0);
+        lowerLeftArm.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
+        lowerRightArm.getPIDController().setD(Constants.ArmConstants.Lower_Arm_PID[2], 0);
+        lowerLeftArm.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
+        lowerRightArm.getPIDController().setFF(Constants.ArmConstants.Lower_Arm_PID[3], 0);
         lowerLeftArm.enableSoftLimit(SoftLimitDirection.kReverse, true);
         lowerRightArm.enableSoftLimit(SoftLimitDirection.kReverse, true);
         lowerLeftArm.setSmartCurrentLimit(Constants.ArmConstants.Lower_Arm_CurrentLimit);
