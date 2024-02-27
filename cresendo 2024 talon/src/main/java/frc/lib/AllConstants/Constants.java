@@ -16,7 +16,7 @@ public class Constants {
     public static final class ShooterConstants{
         public static final double Shooter_GearRaio = 2;
         public static final boolean Shooter_Inverted = false;
-        public static final boolean Shooter2_Inverted = true;
+        public static final boolean Shooter2_Inverted = false;
         public static final double Shooter_Speed = 1200;
         public static final double Shooter_OpenLoopRamp = 0.6;
         public static final double Shooter_ClosedLoopRamp = 0.0;
@@ -83,7 +83,7 @@ public class Constants {
     }
 
     public final class IntakeConstants{
-        public static final double Intake_PID[] = {0.0012, 0.0001, 0.0,0.0002};// TO DO : Using Tuner.
+        public static final double Intake_PID[] = {0.000414,0.0 ,0.0001, 0.0002};// TO DO : Using Tuner.
         public static final double Intake_OpenLoopRamp = 0.53;
         public static final double Intake_ClosedLoopRamp = 0.0;
         public static final int Intake_CurrentLimit = 35;
@@ -91,7 +91,7 @@ public class Constants {
         public static final double Intake_GearRatio = 1/25;
 
         public static final boolean Intake_Inverted = true;
-        public static final double Intake_Speed = 1000;
+        public static final double Intake_Speed = 1500;
        
     }
 

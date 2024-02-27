@@ -38,41 +38,6 @@ public class ArmCommand extends Command {
     //     armSubSystem.setLowerArm(lowerArmUp.getAsDouble() - lowerArmDown.getAsDouble());
     //     armSubSystem.setTopArm( topArmUp.getAsBoolean(), topArmDown.getAsBoolean());
 
-        switch (povSupplier.getAsInt()) {
-            case 0:
-                SmartDashboard.putString("lol", lastPosition);
-                if(lastPosition == "AMP"){
-                    armSubSystem.topToSpeakerPosition();
-                    armSubSystem.lowerToSpeakerPosition();
-                    lastPosition = "speaker";
-                }else if(lastPosition == "intake"){
-                    armSubSystem.lowerToSpeakerPosition();
-                    Timer.delay(2);
-                    armSubSystem.topToSpeakerPosition();
-                    lastPosition = "speaker";
-                }
-                break;
-            case 90:
-                if(lastPosition == "speaker"){
-                    armSubSystem.topToAmpPosition();
-                    armSubSystem.lowerToAmpPosition();
-                    lastPosition = "AMP";
-                }else if(lastPosition == "intake"){
-                    armSubSystem.topToIntakePosition();
-                    armSubSystem.lowerToAmpPosition();
-                    Timer.delay(2);
-                    armSubSystem.topToAmpPosition();
-                    lastPosition = "AMP";
-                }
-                break;
-            case 180:
-                    armSubSystem.topToIntakePosition();
-                    Timer.delay(2);
-                    armSubSystem.lowerToIntakePosition();
-                    lastPosition = "intake";
-                break;
-            default:
-                break;
-        }
-    }    
+  
+    }
 }

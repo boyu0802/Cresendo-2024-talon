@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -24,7 +26,7 @@ public class RobotContainer {
   private final ShootSubSystem shootSubSystem = new ShootSubSystem();
   private final ArmSubSystem armSubSystem = new ArmSubSystem();
   private final MusicSubsystem musicSubSystem = new MusicSubsystem();
-
+  private String lastPosition = "intake";
 
   public RobotContainer() {
 
@@ -37,18 +39,15 @@ public class RobotContainer {
       
       ));
 
-    armSubSystem.setDefaultCommand(
+    // armSubSystem.setDefaultCommand(
         // new ArmCommand(
         //   armSubSystem, 
         //   () -> operatorController.getRawAxis(XboxController.Axis.kLeftTrigger.value),
         //   ()->operatorController.getRawAxis(XboxController.Axis.kRightTrigger.value),
         //   ()-> operatorController.getRawButton(XboxController.Button.kLeftBumper.value),
         //   ()-> operatorController.getRawButton(XboxController.Button.kRightBumper.value))
-      
-        new ArmCommand(
-          armSubSystem, 
-          () -> operatorController.getPOV())
-        );
+      //);
+        
       
     configureBindings();
   }
@@ -115,10 +114,67 @@ public class RobotContainer {
     //         new InstantCommand(armSubSystem::lowerToIntakePosition)
     // ));
 
+              if(lastPosition == "AMP"){
+                new POVButton(operatorController, 0).onTrue(
+                    new SequentialCommandGroup(
+                      new InstantCommand(armSubSystem::topToSpeakerPosition),
+                      new InstantCommand(armSubSystem::lowerToSpeakerPosition)
+                    ));
+                    lastPosition = "speaker";
+                }else if(lastPosition == "intake"){
+                   new POVButton(operatorController, 0).onTrue(
+                  new SequentialCommandGroup(
+                    new InstantCommand(armSubSystem::lowerToSpeakerPosition),
+                    new WaitCommand(2),
+                    new InstantCommand(armSubSystem::topToSpeakerPosition)
+                  ));
+                    lastPosition = "speaker";
+                }
+
+
+              if(lastPosition == "speaker"){
+                 new POVButton(operatorController, 0).onTrue(
+                  new SequentialCommandGroup(
+                    new InstantCommand(armSubSystem::topToAmpPosition),
+                    new InstantCommand(armSubSystem::lowerToAmpPosition)
+                  ));
+                  lastPosition = "AMP";
+                }else if(lastPosition == "intake"){
+                   new POVButton(operatorController, 0).onTrue(
+                      new SequentialCommandGroup(
+                        new InstantCommand(armSubSystem::topToIntakePosition),
+                        new WaitCommand(1),
+                        new InstantCommand(armSubSystem::lowerToAmpPosition),
+                        new WaitCommand(2),
+                        new InstantCommand(armSubSystem::topToAmpPosition)
+                  ));
+                  lastPosition = "AMP";
+                }
+
+                
+                new POVButton(operatorController, 180).onTrue(
+                  new SequentialCommandGroup(
+                    new InstantCommand(armSubSystem::topToIntakePosition),
+                    new WaitCommand(2),
+                    new InstantCommand(armSubSystem::lowerToIntakePosition)
+
+                ));
+                lastPosition = "intake";
+
+          new JoystickButton(driveController,XboxController.Button.kA.value).onTrue(
+                  new InstantCommand(swerveSubSystem::resetModulesToAbsolute)
+          );
+
+
+        }
+
+
+        
+      
 
     
 
-  }
+  
 
 
   // public Command getDisableCommand(){
@@ -133,5 +189,5 @@ public class RobotContainer {
   public void robotInit() {
       
   }
-  
+
 }

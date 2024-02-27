@@ -151,12 +151,11 @@ public class swerveModule {
     }
     public void resetToAbosolute(){
         double absolute = (getCanCoder().getDegrees() - angleOffset.getDegrees());
-        //System.out.printf("%.2f",absolute);
         mAngleFalcon.setPosition(Convertions.degreesToFalcon(absolute));
     }
     
     private void mAngleConfig(){
-TalonFXConfiguration angleConfig = new TalonFXConfiguration();
+        TalonFXConfiguration angleConfig = new TalonFXConfiguration();
         angleConfig.Slot0.kP = swerveTypeConstants.anglePIDF[0];
         angleConfig.Slot0.kI = swerveTypeConstants.anglePIDF[1];
         angleConfig.Slot0.kD = swerveTypeConstants.anglePIDF[2];

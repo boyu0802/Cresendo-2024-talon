@@ -33,6 +33,7 @@ public class SwerveSubSystem extends SubsystemBase {
         navX = new AHRS(SPI.Port.kMXP, SwerveConstants.NAVX_UPDATE_RATE);
         navX.reset();
 
+
         swerveModules = new swerveModule[]{
             new swerveModule(
                 0,SwerveTypeConstants.SDSMK4I_L1(),
@@ -59,9 +60,11 @@ public class SwerveSubSystem extends SubsystemBase {
                 RobotMap.FRONT_RIGHT_CANCODER_MOTOR_ID,
                 RobotMap.FRONT_RIGHT_ANGLE_OFFSET),
         };
-        Timer.delay(1.0);
 
+        Timer.delay(10.0);
         resetModulesToAbsolute();
+
+        
 
         swerveDriveKinematics = SwerveConstants.SwerveDriveKinematics;
         swerveDriveOdometry = new SwerveDriveOdometry(swerveDriveKinematics, getYaw(), getModulePositions());
@@ -115,6 +118,7 @@ public class SwerveSubSystem extends SubsystemBase {
        return (SwerveConstants.NAVX_INVERTED) ? Rotation2d.fromDegrees(360 - navX.getYaw()) : Rotation2d.fromDegrees(navX.getYaw());
     }
     public void resetModulesToAbsolute(){
+        SmartDashboard.putBoolean("stuff", true);
         for(swerveModule module : swerveModules){
             module.resetToAbosolute();
         }
@@ -140,7 +144,6 @@ public class SwerveSubSystem extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + module.moduleNumber + " Velocity", module.getState().speedMetersPerSecond);
             
         }
-    SmartDashboard.putNumber("Roll", navX.getRoll());
     }
 
    
