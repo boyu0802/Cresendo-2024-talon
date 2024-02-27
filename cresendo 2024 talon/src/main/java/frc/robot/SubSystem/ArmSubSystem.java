@@ -147,7 +147,6 @@ public class ArmSubSystem extends SubsystemBase {
     public void lowerToSpeakerPosition() {
         lowerPosition = Constants.ArmConstants.LOWER_ARM_POSITIONS.get(Constants.ArmConstants.LowerArmPosition.SPEAKER);
         setLowerArm( lowerPosition);
-        SmartDashboard.putNumber("lower to speaker", lowerPosition);
     }
     
 

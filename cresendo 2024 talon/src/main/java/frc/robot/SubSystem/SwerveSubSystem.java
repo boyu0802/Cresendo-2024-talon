@@ -61,7 +61,7 @@ public class SwerveSubSystem extends SubsystemBase {
                 RobotMap.FRONT_RIGHT_ANGLE_OFFSET),
         };
 
-        Timer.delay(10.0);
+        Timer.delay(1.0);
         resetModulesToAbsolute();
 
         
@@ -118,13 +118,11 @@ public class SwerveSubSystem extends SubsystemBase {
        return (SwerveConstants.NAVX_INVERTED) ? Rotation2d.fromDegrees(360 - navX.getYaw()) : Rotation2d.fromDegrees(navX.getYaw());
     }
     public void resetModulesToAbsolute(){
-        SmartDashboard.putBoolean("stuff", true);
         for(swerveModule module : swerveModules){
             module.resetToAbosolute();
         }
     }
     public void zeroGyro(){
-        System.out.println("asdfghjkl");
         navX.reset();
     }
     public SwerveModuleState[] getModuleStates(){

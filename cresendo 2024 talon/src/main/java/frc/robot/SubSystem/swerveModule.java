@@ -3,7 +3,7 @@ package frc.robot.SubSystem;
 
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
@@ -58,7 +58,11 @@ public class swerveModule {
         this.angleOffset = angleOffset;
 
         mAngleCanCoder = new CANcoder(canCoderID);
-        mAngleCanCoderConfig();
+        mAngleCanCoder.getConfigurator().apply(new MagnetSensorConfigs()
+            .withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1)
+            .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)
+        );
+
         
         mDriveFalcon = new TalonFX(driveMotorID,RobotMap.SWERVE_CANBUS_TYPE);
         mDriveConfig();
@@ -150,10 +154,9 @@ public class swerveModule {
         mDriveFalcon.getConfigurator().apply(driveConfig);
     }
     public void resetToAbosolute(){
-        double absolute = (getCanCoder().getDegrees() - angleOffset.getDegrees());
-        mAngleFalcon.setPosition(Convertions.degreesToFalcon(absolute));
+        mAngleFalcon.setPosition(Convertions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset.getDegrees()));
     }
-    
+
     private void mAngleConfig(){
         TalonFXConfiguration angleConfig = new TalonFXConfiguration();
         angleConfig.Slot0.kP = swerveTypeConstants.anglePIDF[0];
@@ -176,14 +179,7 @@ public class swerveModule {
 
     }
     
-    private void mAngleCanCoderConfig(){
-        CANcoderConfiguration canConfig = new CANcoderConfiguration();
-        canConfig.MagnetSensor.SensorDirection =SensorDirectionValue.CounterClockwise_Positive;
-        canConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        //canConfig.MagnetSensor.MagnetOffset = 0.0;
-        mAngleCanCoder.getConfigurator().apply(canConfig);
-
-    }
+   
     
     
     
