@@ -21,7 +21,7 @@ public class Convertions {
         return canCoder * (360.0 /1.0);
     }
     public static double degreesToFalcon(double degrees) {
-        return degrees * 2048.0 / 360.0;
+        return degrees / 360.0;
     }
     public static double falconToDegrees(double falcon) {
         return falcon * 360.0 / 2048.0;
